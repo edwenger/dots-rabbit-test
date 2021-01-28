@@ -316,9 +316,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55e6acc6c34682d4e9fa41e90b1fc1e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPrefab: {fileID: 1822202317406006245, guid: 08cbca732e552ea4cb749ec609817dfa, type: 3}
+  spawnPrefabs:
+  - {fileID: 1822202317406006245, guid: 08cbca732e552ea4cb749ec609817dfa, type: 3}
+  - {fileID: 7730402636707213488, guid: 6ec5f6c0b09629947a59f6de27753050, type: 3}
   spawnRadius: 10
-  nSpawned: 5
+  nSpawned: 20
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

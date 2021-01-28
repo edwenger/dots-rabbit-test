@@ -10,10 +10,10 @@ public class Spawner : MonoBehaviour
 {
     private EntityManager entityManager;
 
-    [SerializeField] private GameObject spawnPrefab;
+    [SerializeField] private GameObject[] spawnPrefabs = new GameObject[2];
     [SerializeField] private float spawnRadius = 5f;
 
-    private Entity spawnEntityPrefab;
+    private readonly Entity[] spawnEntityPrefabs = new Entity[2];
 
     public int nSpawned;
 
@@ -26,8 +26,11 @@ public class Spawner : MonoBehaviour
         var settings = GameObjectConversionSettings.FromWorld(
             World.DefaultGameObjectInjectionWorld, blob);
 
-        spawnEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(
-            spawnPrefab, settings);
+        for (int i = 0; i < spawnPrefabs.Length; i++)
+        {
+            spawnEntityPrefabs[i] = GameObjectConversionUtility.ConvertGameObjectHierarchy(
+                spawnPrefabs[i], settings);
+        }
 
         Spawn();
 
@@ -40,10 +43,11 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < spawnArray.Length; i++)
         {
-            spawnArray[i] = entityManager.Instantiate(spawnEntityPrefab);
+            int randomIndex = Random.Range(0, spawnEntityPrefabs.Length);
+            spawnArray[i] = entityManager.Instantiate(spawnEntityPrefabs[randomIndex]);
 
             entityManager.SetComponentData(spawnArray[i], new Translation {
-                Value = RandomPointOnCircle(spawnRadius) });
+                Value = RandomPointOnCircle(spawnRadius) + new float3(0, 0.3f, 0) });
         }
 
         spawnArray.Dispose();
@@ -51,7 +55,7 @@ public class Spawner : MonoBehaviour
 
     private float3 RandomPointOnCircle(float radius)
     {
-        Vector2 randomPoint = Random.insideUnitCircle.normalized * radius;
+        Vector2 randomPoint = Random.insideUnitCircle * radius;
 
         return new float3(randomPoint.x, 2.5f, randomPoint.y);
     }
