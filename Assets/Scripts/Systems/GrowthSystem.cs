@@ -17,7 +17,7 @@ public class GrowthSystem : SystemBase
         float _femaleScale = femaleScale;
         float _adultAge = adultAge;
 
-        Entities.WithAll<Rabbit>().ForEach((ref LocalToParent local, in AgeData ageData, in SexData sexData) =>
+        Entities.WithAll<RabbitTag>().ForEach((ref LocalToParent local, in AgeData ageData, in SexData sexData) =>
         {
             float scale = _adultScale;
             float age = ageData.age;
