@@ -1,7 +1,6 @@
 using UnityEngine;
 using Unity.Burst;
 using Unity.Entities;
-using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 
@@ -12,6 +11,8 @@ public class BirthSystem : SystemBase
     Entity templateEntity = Entity.Null;
     TemplateData templateData;
 
+    public float spawnRadius = 3.0f;
+
     protected override void OnCreate()
     {
         m_EntityCommandBufferSystem = World.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
@@ -19,6 +20,8 @@ public class BirthSystem : SystemBase
 
     protected override void OnUpdate()
     {
+        float spawnRadius_ = spawnRadius;  // TODO: find a good pattern for all system configuration variables
+
         if (templateEntity == Entity.Null)
         {
             EntityQuery templateQuery = GetEntityQuery(ComponentType.ReadOnly<TemplateData>());
@@ -39,7 +42,7 @@ public class BirthSystem : SystemBase
 
         Entities
             .WithBurst(FloatMode.Default, FloatPrecision.Standard, true)
-            .ForEach((Entity entity, int entityInQueryIndex, ref GestationData gestationData) =>
+            .ForEach((Entity entity, int entityInQueryIndex, ref GestationData gestationData, in Translation translation) =>
             {
                 gestationData.timeUntilDelivery -= deltaTime;
 
@@ -47,9 +50,14 @@ public class BirthSystem : SystemBase
                 {
                     Debug.Log("Time to birth a baby Cinnamon!");
 
+                    //float3 offset = new float3(randomPoint.x, 0, randomPoint.y);  // TODO: find threadsafe Random pattern for inside Job
+                    float3 offset = new float3(spawnRadius_, 0, 0);
+
                     var instance = commandBuffer.Instantiate(entityInQueryIndex, cinnamonPrefab);
-                    commandBuffer.SetComponent(entityInQueryIndex, instance, new Translation { 
-                        Value = new float3(0, 2.6f, 0) });
+                    commandBuffer.SetComponent(entityInQueryIndex, instance, new Translation
+                    {
+                        Value = translation.Value + offset
+                    });
 
                     commandBuffer.RemoveComponent<GestationData>(entityInQueryIndex, entity);
                 }

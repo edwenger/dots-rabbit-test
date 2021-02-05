@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0fdde6e67b7904599e99f83b16f135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oreoPrefab: {fileID: 7730402636707213488, guid: 6ec5f6c0b09629947a59f6de27753050, type: 3}
-  cinnamonPrefab: {fileID: 1822202317406006245, guid: 08cbca732e552ea4cb749ec609817dfa, type: 3}
+  oreoPrefab: {fileID: 3367376461284172629, guid: 4724891ad9a4c3a4e836b979c13be284, type: 3}
+  cinnamonPrefab: {fileID: 7287817292012138557, guid: 8866cbbbe9f249d4aae7298d0f13ac52, type: 3}
 --- !u!4 &507547333
 Transform:
   m_ObjectHideFlags: 0

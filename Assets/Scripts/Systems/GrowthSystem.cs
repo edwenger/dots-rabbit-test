@@ -5,7 +5,7 @@ using Unity.Transforms;
 
 public class GrowthSystem : SystemBase
 {
-    public float newbornScale = 0.25f;
+    public float newbornScale = 0.25f;  // TODO: find a good pattern for all system configuration variables
     public float adultScale = 1.0f;
     public float femaleScale = 0.8f;
     public float adultAge = 30f;
@@ -17,7 +17,7 @@ public class GrowthSystem : SystemBase
         float _femaleScale = femaleScale;
         float _adultAge = adultAge;
 
-        Entities.WithAll<RabbitTag>().ForEach((ref LocalToParent local, in AgeData ageData, in SexData sexData) =>
+        Entities.WithAll<RabbitTag>().ForEach((ref NonUniformScale scaleData, in AgeData ageData, in SexData sexData) =>
         {
             float scale = _adultScale;
             float age = ageData.age;
@@ -32,11 +32,7 @@ public class GrowthSystem : SystemBase
                 scale *= _femaleScale;
             }
 
-            local.Value = new float4x4(
-                scale, 0, 0, 0,
-                0, scale, 0, local.Value.c3.y,  // TODO: only currently preserving y-offset
-                0, 0, scale, 0,
-                0, 0, 0, 1.0f);
+            scaleData.Value = new float3(scale, scale, scale);
 
         }).ScheduleParallel();
     }

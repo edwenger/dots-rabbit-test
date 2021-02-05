@@ -47,16 +47,16 @@ public class Spawner : MonoBehaviour
             spawnArray[i] = entityManager.Instantiate(spawnEntityPrefabs[randomIndex]);
 
             entityManager.SetComponentData(spawnArray[i], new Translation {
-                Value = RandomPointOnCircle(spawnRadius) + new float3(0, 0.3f, 0) });
+                Value = RandomPointInCircle(spawnRadius) });
         }
 
         spawnArray.Dispose();
     }
 
-    private float3 RandomPointOnCircle(float radius)
+    private float3 RandomPointInCircle(float radius)
     {
         Vector2 randomPoint = Random.insideUnitCircle * radius;
 
-        return new float3(randomPoint.x, 2.5f, randomPoint.y);
+        return new float3(randomPoint.x, 0, randomPoint.y);
     }
 }
