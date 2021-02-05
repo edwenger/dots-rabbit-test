@@ -4,4 +4,5 @@ using Unity.Entities;
 public struct GestationData : IComponentData
 {
     public float timeUntilDelivery;
+    public int litterSize;
 }

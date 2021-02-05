@@ -11,7 +11,7 @@ public class BirthSystem : SystemBase
     Entity templateEntity = Entity.Null;
     TemplateData templateData;
 
-    public float spawnRadius = 3.0f;
+    public float spawnRadius = 5.0f;
 
     protected override void OnCreate()
     {
@@ -21,6 +21,8 @@ public class BirthSystem : SystemBase
     protected override void OnUpdate()
     {
         float spawnRadius_ = spawnRadius;  // TODO: find a good pattern for all system configuration variables
+
+        var randomArray = World.GetExistingSystem<RandomSystem>().RandomArray;
 
         if (templateEntity == Entity.Null)
         {
@@ -35,31 +37,48 @@ public class BirthSystem : SystemBase
         }
 
         Entity cinnamonPrefab = templateData.cinnamonPrefab;
+        Entity oreoPrefab = templateData.oreoPrefab;
 
         var commandBuffer = m_EntityCommandBufferSystem.CreateCommandBuffer().AsParallelWriter();
 
         float deltaTime = Time.DeltaTime;
 
         Entities
-            .WithBurst(FloatMode.Default, FloatPrecision.Standard, true)
-            .ForEach((Entity entity, int entityInQueryIndex, ref GestationData gestationData, in Translation translation) =>
+            .WithNativeDisableParallelForRestriction(randomArray)
+            .ForEach((Entity entity, int entityInQueryIndex, int nativeThreadIndex, ref GestationData gestationData, in Translation translation) =>
             {
                 gestationData.timeUntilDelivery -= deltaTime;
 
                 if (gestationData.timeUntilDelivery <= 0)
                 {
-                    Debug.Log("Time to birth a baby Cinnamon!");
+                    var random = randomArray[nativeThreadIndex];
+                    Entity instance = Entity.Null;
 
-                    //float3 offset = new float3(randomPoint.x, 0, randomPoint.y);  // TODO: find threadsafe Random pattern for inside Job
-                    float3 offset = new float3(spawnRadius_, 0, 0);
-
-                    var instance = commandBuffer.Instantiate(entityInQueryIndex, cinnamonPrefab);
-                    commandBuffer.SetComponent(entityInQueryIndex, instance, new Translation
+                    for (int i = 0; i < gestationData.litterSize; i++)
                     {
-                        Value = translation.Value + offset
-                    });
+                        if (random.NextFloat() > 0.5f)
+                        {
+                            //Debug.Log("Time to birth a baby Cinnamon!");
+                            instance = commandBuffer.Instantiate(entityInQueryIndex, cinnamonPrefab);
+                        }
+                        else
+                        {
+                            //Debug.Log("Time to birth a baby Oreo!");
+                            instance = commandBuffer.Instantiate(entityInQueryIndex, oreoPrefab);
+                        }
+
+                        //float3 offset = new float3(randomPoint.x, 0, randomPoint.y);  // TODO: find threadsafe Random pattern for inside Job
+                        float3 offset = new float3(i + 1, 0, 0) * spawnRadius_;
+
+                        commandBuffer.SetComponent(entityInQueryIndex, instance, new Translation
+                        {
+                            Value = translation.Value + offset
+                        });
+                    }
 
                     commandBuffer.RemoveComponent<GestationData>(entityInQueryIndex, entity);
+
+                    randomArray[nativeThreadIndex] = random; // This is NECESSARY.
                 }
 
             }).ScheduleParallel();
