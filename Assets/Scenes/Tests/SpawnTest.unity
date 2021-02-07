@@ -317,10 +317,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPrefabs:
-  - {fileID: 3367376461284172629, guid: 4724891ad9a4c3a4e836b979c13be284, type: 3}
-  - {fileID: 7287817292012138557, guid: 8866cbbbe9f249d4aae7298d0f13ac52, type: 3}
-  spawnRadius: 100
-  nSpawned: 200
+  - {fileID: 6404472365402756107, guid: c92961728b544a44c9cd5fe20ba2ba1a, type: 3}
+  - {fileID: 6404472365402756107, guid: c92961728b544a44c9cd5fe20ba2ba1a, type: 3}
+  spawnRadius: 50
+  nSpawned: 2000
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
