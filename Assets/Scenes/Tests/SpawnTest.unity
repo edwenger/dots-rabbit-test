@@ -319,8 +319,8 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 6404472365402756107, guid: c92961728b544a44c9cd5fe20ba2ba1a, type: 3}
   - {fileID: 6404472365402756107, guid: c92961728b544a44c9cd5fe20ba2ba1a, type: 3}
-  spawnRadius: 50
-  nSpawned: 2000
+  spawnRadius: 200
+  nSpawned: 20000
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

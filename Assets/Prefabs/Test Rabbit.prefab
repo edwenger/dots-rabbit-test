@@ -24,6 +24,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 7876897632660114191, guid: a1c2194f1f146fe4eabda1f24f3851b1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 43d91cc396861f443b5574aef062e3d3, type: 2}
     - target: {fileID: 7876897633088005293, guid: a1c2194f1f146fe4eabda1f24f3851b1, type: 3}
       propertyPath: m_Name
       value: Test Rabbit
